@@ -131,7 +131,7 @@ class _AulaInteligenteAppState extends State<AulaInteligenteApp>
         }
 
         return MaterialApp(
-          title: 'Aula Inteligente',
+          title: 'AsistIA',
           theme: AppThemes.lightTheme,
           debugShowCheckedModeBanner: false,
           darkTheme: AppThemes.darkTheme,
