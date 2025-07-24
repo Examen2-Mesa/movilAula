@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final List<Widget> _screens = [
     const DashboardScreen(),
     const ListaAsistenciaScreen(),
-    const RegistroParticipacionScreen(),
+    //const RegistroParticipacionScreen(),
     const ListaEstudiantesScreen(),
   ];
 
@@ -43,12 +43,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       label: 'Asistencia',
       color: const Color(0xFFFFC107),
     ),
-    _NavigationItem(
+    /*_NavigationItem(
       icon: Icons.record_voice_over_outlined,
       activeIcon: Icons.record_voice_over_rounded,
       label: 'Participación',
       color: const Color(0xFF607D8B),
-    ),
+    ),*/
     _NavigationItem(
       icon: Icons.school_outlined,
       activeIcon: Icons.school_rounded,
@@ -133,10 +133,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            child: Icon(
-              Icons.psychology_rounded,
-              color: isDarkMode ? const Color(0xFF2E3B42) : Colors.white,
-              size: 24,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                'https://res.cloudinary.com/dma13psxd/image/upload/v1753330602/bf04cb4f-2a38-4b6b-a70d-9e53e2085e52_lchpfd.jpg',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.psychology_rounded,
+                    color: isDarkMode ? const Color(0xFF2E3B42) : Colors.white,
+                    size: 24,
+                  );
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
           const SizedBox(width: 12),

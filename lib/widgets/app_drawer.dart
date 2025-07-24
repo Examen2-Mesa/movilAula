@@ -70,7 +70,7 @@ class AppDrawer extends StatelessWidget {
                             ListaAsistenciaScreen.routeName);
                       },
                     ),
-                    _buildModernListTile(
+                   /* _buildModernListTile(
                       context,
                       icon: Icons.record_voice_over_rounded,
                       title: 'Registro de Participación',
@@ -79,7 +79,7 @@ class AppDrawer extends StatelessWidget {
                         Navigator.of(context).pushReplacementNamed(
                             RegistroParticipacionScreen.routeName);
                       },
-                    ),
+                    ),*/
                     _buildModernListTile(
                       context,
                       icon: Icons.school_rounded,
