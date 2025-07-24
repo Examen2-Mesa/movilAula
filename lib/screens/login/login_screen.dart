@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const ThemeToggleButton(),
                 ),
               ),
-              
+
               // Contenido principal
               Center(
                 child: SingleChildScrollView(
@@ -118,44 +118,141 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // Logo o icono de la app
+                                // Logo de AsistIA con la imagen real
                                 Container(
-                                  padding: const EdgeInsets.all(16),
+                                  width: 120,
+                                  height: 120,
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor.withOpacity(0.1),
-                                    shape: BoxShape.circle,
+                                    borderRadius: BorderRadius.circular(30),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(0.3),
+                                        blurRadius: 20,
+                                        offset: const Offset(0, 10),
+                                      ),
+                                    ],
                                   ),
-                                  child: Icon(
-                                    Icons.school,
-                                    size: 48,
-                                    color: Theme.of(context).primaryColor,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: Image.network(
+                                      'https://res.cloudinary.com/dma13psxd/image/upload/v1753330602/bf04cb4f-2a38-4b6b-a70d-9e53e2085e52_lchpfd.jpg', // Aquí pones tu URL
+                                      width: 120,
+                                      height: 120,
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        // Fallback al icono si la imagen no carga
+                                        return Container(
+                                          width: 120,
+                                          height: 120,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                Theme.of(context).primaryColor,
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                              ],
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          child: Icon(
+                                            Icons.psychology_rounded,
+                                            size: 60,
+                                            color: isDarkMode
+                                                ? const Color(0xFF2E3B42)
+                                                : Colors.white,
+                                          ),
+                                        );
+                                      },
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return Container(
+                                          width: 120,
+                                          height: 120,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).cardColor,
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 24),
-                                
-                                // Título
+
+                                // Título de la app
                                 Text(
-                                  'Aula Inteligente',
-                                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
+                                  'AsistIA',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                        letterSpacing: 1.5,
+                                      ),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Ingresa a tu cuenta',
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
-                                  ),
+                                  'Aula Inteligente',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.color
+                                            ?.withOpacity(0.7),
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 1.0,
+                                      ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Gestión Educativa Inteligente',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.color
+                                            ?.withOpacity(0.5),
+                                      ),
+                                  textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 32),
-                                
+
                                 // Campo de email
                                 TextFormField(
                                   controller: _emailController,
+                                  keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                     labelText: 'Correo electrónico',
-                                    hintText: 'Ingresa tu correo',
+                                    hintText: 'Ingresa tu correo electrónico',
                                     prefixIcon: Icon(
                                       Icons.email_outlined,
                                       color: Theme.of(context).iconTheme.color,
@@ -177,14 +274,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     ),
                                     filled: true,
-                                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                                    fillColor: Theme.of(context)
+                                        .inputDecorationTheme
+                                        .fillColor,
                                   ),
-                                  keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Por favor ingrese su correo electrónico';
                                     }
-                                    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                                    final emailRegex = RegExp(
+                                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                                     if (!emailRegex.hasMatch(value)) {
                                       return 'Por favor ingrese un correo electrónico válido';
                                     }
@@ -192,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                                 const SizedBox(height: 16),
-                                
+
                                 // Campo de contraseña
                                 TextFormField(
                                   controller: _passwordController,
@@ -220,11 +319,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     ),
                                     filled: true,
-                                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                                    fillColor: Theme.of(context)
+                                        .inputDecorationTheme
+                                        .fillColor,
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                                        color: Theme.of(context).iconTheme.color?.withOpacity(0.7),
+                                        _obscurePassword
+                                            ? Icons.visibility_outlined
+                                            : Icons.visibility_off_outlined,
+                                        color: Theme.of(context)
+                                            .iconTheme
+                                            .color
+                                            ?.withOpacity(0.7),
                                       ),
                                       onPressed: () {
                                         setState(() {
@@ -242,7 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                                 const SizedBox(height: 24),
-                                
+
                                 // Botón de login
                                 SizedBox(
                                   width: double.infinity,
@@ -250,7 +356,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: ElevatedButton(
                                     onPressed: _isLoading ? null : _submitForm,
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context).primaryColor,
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
                                       foregroundColor: Colors.white,
                                       elevation: _isLoading ? 0 : 4,
                                       shape: RoundedRectangleBorder(
@@ -258,43 +365,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     ),
                                     child: _isLoading
-                                        ? const SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                              strokeWidth: 2,
-                                            ),
+                                        ? const CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white),
                                           )
-                                        : Text(
-                                            'INGRESAR',
-                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
+                                        : const Text(
+                                            'Iniciar Sesión',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                   ),
                                 ),
-                                
-                                const SizedBox(height: 16),
-                                
+                                const SizedBox(height: 24),
+
                                 // Información adicional
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.info_outline,
-                                      size: 16,
-                                      color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      'Solo para docentes autorizados',
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+                                Text(
+                                  'AsistIA v1.0.0',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.color
+                                            ?.withOpacity(0.5),
                                       ),
-                                    ),
-                                  ],
                                 ),
                               ],
                             ),
